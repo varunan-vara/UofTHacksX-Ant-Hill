@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'Widgets/AppBar.dart';
+import 'package:flutter/services.dart';
+import 'Pages/JournalEntry.dart';
 
 void main() {
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: [SystemUiOverlay.bottom],
+  );
   runApp(MyApp());
 }
 
@@ -9,17 +17,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Journal App',
-      home: JournalPage(),
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
     );
   }
 }
 
-class JournalPage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _JournalPageState createState() => _JournalPageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _JournalPageState extends State<JournalPage> {
+class _HomePageState extends State<HomePage> {
   final List<String> _entries = <String>[];
   final TextEditingController _controller = TextEditingController();
 
@@ -35,31 +44,40 @@ class _JournalPageState extends State<JournalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('AntHill')),
       body: Column(
         children: <Widget>[
-          Expanded(
-            child: ListView.builder(
-              key: UniqueKey(),
-              padding: const EdgeInsets.all(8),
-              itemCount: _entries.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  child: Text(_entries[index]),
-                );
-              },
-            ),
-          ),
-          TextField(
-            controller: _controller,
-            decoration: InputDecoration(
-              hintText: 'Enter a new entry',
-            ),
-            onSubmitted: (String value) {
-              _addEntry();
-            },
+          NewAppBar(),
+          SingleChildScrollView(
+            child: Column(children: <Widget>[
+              const SubAppBar(text: "Home"),
+            ]),
           ),
         ],
+      ),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.symmetric(vertical: 20),
+        child: SizedBox(
+          height: 70,
+          width: 160,
+          child: FloatingActionButton.extended(
+            label: Text(
+              "New Journal",
+              style: GoogleFonts.redHatDisplay(),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => JournalEntry()));
+            },
+            backgroundColor: Color(0xffB786E5),
+            tooltip: 'Increment',
+            icon: const Icon(
+              Icons.add,
+              size: 12,
+            ),
+          ),
+        ),
       ),
     );
   }
