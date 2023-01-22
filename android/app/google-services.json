@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "856485694389",
+    "project_id": "ant-hill-adf22",
+    "storage_bucket": "ant-hill-adf22.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856485694389:android:ba285633b6cc67b08327fc",
+        "android_client_info": {
+          "package_name": "com.example.ant_hill"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "856485694389-p85nfc5f5bf0gjgosunvnjuuuutdcua9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtkHtx7yMP16WMe6IocS_f8RtkyEGXVew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "856485694389-p85nfc5f5bf0gjgosunvnjuuuutdcua9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

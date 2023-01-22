@@ -3,12 +3,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'Widgets/AppBar.dart';
 import 'package:flutter/services.dart';
 import 'Pages/JournalEntry.dart';
+import 'package:firebase_core/firebase_core.dart';
+import '../firebase_options.dart';
 
-void main() {
+void main() async {
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.manual,
     overlays: [SystemUiOverlay.bottom],
   );
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(MyApp());
 }
 
@@ -46,7 +54,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          NewAppBar(),
+          NewAppBar(
+            isSettings: true,
+            contextData: context,
+          ),
           SingleChildScrollView(
             child: Column(children: <Widget>[
               const SubAppBar(text: "Home"),
@@ -65,10 +76,8 @@ class _HomePageState extends State<HomePage> {
               style: GoogleFonts.redHatDisplay(),
             ),
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => JournalEntry()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => JournalEntry()));
             },
             backgroundColor: Color(0xffB786E5),
             tooltip: 'Increment',

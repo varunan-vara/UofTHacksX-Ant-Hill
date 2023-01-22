@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../Widgets/AppBar.dart';
 import 'package:multiselect/multiselect.dart';
+import '../Code/firebase_accessor.dart';
 
 class JournalEntry extends StatefulWidget {
   JournalEntry({Key? key}) : super(key: key);
@@ -21,7 +22,15 @@ class _JournalEntryState extends State<JournalEntry> {
   Future<void> tempLoader() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      prefs.setStringList("dropdownActivities", ["School", "Sports"]);
+      prefs.setStringList("dropdownActivities", [
+        "Exams",
+        "Midterms",
+        "Assignments",
+        "Piano Practice",
+        "Play Basketball",
+        "Coding",
+        "Video Games"
+      ]);
     });
   }
 
@@ -40,7 +49,10 @@ class _JournalEntryState extends State<JournalEntry> {
       resizeToAvoidBottomInset: false,
       body: Column(
         children: <Widget>[
-          NewAppBar(),
+          NewAppBar(
+            isSettings: false,
+            contextData: context,
+          ),
           SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -52,6 +64,7 @@ class _JournalEntryState extends State<JournalEntry> {
                   children: [
                     JournalQuestion(text: "Decribe how you felt today:"),
                     TextField(
+                      textCapitalization: TextCapitalization.sentences,
                       minLines: 10,
                       maxLines: 10,
                       decoration: InputDecoration(
@@ -116,7 +129,7 @@ class _JournalEntryState extends State<JournalEntry> {
                         ],
                       ),
                     ),
-                    JournalQuestion(text: "Select your activity tags:"),
+                    JournalQuestion(text: "\nSelect your activity tags:"),
                     SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: DropDownMultiSelect(
@@ -131,7 +144,7 @@ class _JournalEntryState extends State<JournalEntry> {
                         )),
                     JournalQuestion(
                         text:
-                            "Select any of the following moods that may apply"),
+                            "\nSelect any of the following moods that may apply"),
                     SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: DropDownMultiSelect(
@@ -170,7 +183,24 @@ class _JournalEntryState extends State<JournalEntry> {
                   SimpleFlatButton(
                       text: "Done",
                       inputFunc: () {
+                        String inputString = selected.toString() + "\n";
+                        for (var i = 0; i < activitySelected.length; i++) {
+                          inputString += activitySelected[i] + ", ";
+                        }
+                        inputString += "\n";
+                        for (var i = 0; i < moodsSelected.length; i++) {
+                          inputString += moodsSelected[i] + ", ";
+                        }
+                        inputString += "\n" + journalEntry;
+                        Future<String> returnstr = sendStringtoFirebase(inputString);
+
+
+                        final mysnack = SnackBar(
+                          content: const Text("Added Entry to your Journal",
+                              style: TextStyle(fontSize: 16)),
+                        );
                         Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(mysnack);
                       }),
                 ],
               )
@@ -253,7 +283,7 @@ class SimpleFlatButton extends StatelessWidget {
         ),
         child: Text(
           "$text",
-          style: TextStyle(color: Colors.white, fontSize: 13.0),
+          style: GoogleFonts.redHatDisplay(textStyle: TextStyle(color: Colors.white, fontSize: 13.0, fontWeight: FontWeight.w500)),
         ),
       ),
     );
