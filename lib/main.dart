@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/Screens/welcome_screen.dart';
+import 'package:flutter_application/constants.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,8 +10,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Journal App',
-      home: JournalPage(),
+      debugShowCheckedModeBanner: false,
+      title: 'AntHill',
+      theme: ThemeData(
+        primaryColor: kPrimaryColor,
+        scaffoldBackgroundColor: Colors.white,
+      ),
+      home: WelcomeScreen(),
     );
   }
 }
